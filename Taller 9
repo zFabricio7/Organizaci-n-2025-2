@@ -1,0 +1,42 @@
+section .data
+    num1    db 5              ; Primer número (byte)
+    num2    db 11             ; Segundo número (byte)
+    result  db 0              ; Resultado de la suma
+    msg     db 'Resultado: ', 0
+
+section .bss
+    buffer  resb 4            ; Espacio para almacenar ASCII
+
+section .text
+    global _start
+
+_start:
+    ; Suma de num1 + num2
+    mov     al, [num1]        ; Cargar num1 en AL
+    add     al, [num2]        ; Sumar num2
+    mov     [result], al      ; Guardar resultado
+
+    ; Convertir resultado a ASCII
+    movzx   eax, byte [result] ; Expandir el byte a 32 bits
+    add     eax, 48            ; Convertir a ASCII ('0' = 48)
+    mov     [buffer], al       ; Guardar ASCII
+
+    ; Imprimir mensaje "Resultado: "
+    mov     eax, 4             ; sys_write
+    mov     ebx, 1             ; stdout
+    mov     ecx, msg           ; dirección del mensaje
+    mov     edx, 11            ; longitud
+    int     0x80
+
+    ; Imprimir carácter convertido
+    mov     eax, 4             ; sys_write
+    mov     ebx, 1             ; stdout
+    mov     ecx, buffer        ; ASCII del resultado
+    mov     edx, 1             ; 1 byte
+    int     0x80
+
+    ; Terminar programa
+    mov     eax, 1             ; sys_exit
+    xor     ebx, ebx
+    int     0x80
+
