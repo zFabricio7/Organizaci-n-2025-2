@@ -1,0 +1,88 @@
+section .data
+    msg db "Resultado: ", 0
+    len equ $ - msg
+
+    msgErr db "Error: division entre cero", 10, 0
+    lenErr equ $ - msgErr
+
+    newline db 10, 0
+    lenNL equ $ - newline
+
+section .bss
+    resultado resb 1
+
+section .text
+    global _start
+
+_start:
+    ; ============================
+    ; Números hardcoded (ASCII)
+    ; ============================
+    mov al, '8'       ; primer número
+    sub al, '0'
+
+    mov bl, '0'       ; segundo número (CAMBIA ESTE VALOR PARA PROBAR)
+    sub bl, '0'
+
+    ; ============================
+    ; Comprobar división entre cero
+    ; ============================
+    cmp bl, 0         ; ¿es divisor igual a 0?
+    je division_cero  ; si bl == 0 => error
+
+    ; ============================
+    ; División AL / BL
+    ; ============================
+    xor ah, ah
+    div bl
+    jmp imprimir_resultado
+
+
+; ======================================
+; Simulación de interrupción por /0
+; ======================================
+division_cero:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msgErr
+    mov edx, lenErr
+    int 0x80
+    jmp salir
+
+
+; ======================================
+; Imprimir resultado normal
+; ======================================
+imprimir_resultado:
+    add al, '0'
+    mov [resultado], al
+
+    ; imprimir texto "Resultado: "
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg
+    mov edx, len
+    int 0x80
+
+    ; imprimir el número resultante
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, resultado
+    mov edx, 1
+    int 0x80
+
+    ; salto de línea
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, newline
+    mov edx, lenNL
+    int 0x80
+
+
+; ======================================
+; Salir del programa
+; ======================================
+salir:
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
