@@ -1,0 +1,25 @@
+section .data
+    mensaje     db "AX es igual a 5", 0
+    mensaje2    db "AX no es igual a 5", 0
+
+section .text
+    global _start
+
+_start:
+    mov ax, 5
+    cmp ax, 5
+    je  es_cinco
+    jmp no_es_cinco
+
+es_cinco:
+    ; Código para mostrar "AX es igual a 5"
+    jmp fin
+
+no_es_cinco:
+    ; Código para mostrar "AX no es igual a 5"
+    jmp fin
+
+fin:
+    mov eax, 60
+    xor edi, edi
+    syscall
