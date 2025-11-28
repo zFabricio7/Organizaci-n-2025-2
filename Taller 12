@@ -1,0 +1,39 @@
+SECTION .data
+    mi_estructura:
+        db 5, 10, 20
+    resultado:
+        dd 0
+
+%macro CARGAR 1
+    mov al, [mi_estructura + %1]
+%endmacro
+
+SECTION .text
+    global _start
+
+_start:
+    ; Inicializar acumulador
+    xor ebx, ebx
+
+    ; Sumar primer elemento
+    CARGAR 0
+    movzx edx, al
+    add ebx, edx
+
+    ; Sumar segundo elemento
+    CARGAR 1
+    movzx edx, al
+    add ebx, edx
+
+    ; Sumar tercer elemento
+    CARGAR 2
+    movzx edx, al
+    add ebx, edx
+
+    ; Guardar resultado
+    mov [resultado], ebx
+
+    ; Salir del programa
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
