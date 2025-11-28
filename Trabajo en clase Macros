@@ -1,0 +1,65 @@
+_start:
+    mov ecx, 0
+    mov eax, 0
+    ecx = 0: será el índice del arreglo.
+    eax = 0: será el acumulador donde se guardará la suma.
+
+bucle:
+    mov ebx, [array + ecx*4]
+    Carga en ebx el elemento del arreglo.
+    Como el arreglo es de enteros de 4 bytes, se usa ecx*4 para moverse al elemento correcto.
+    Si ecx = 0 → lee array + 0
+    Si ecx = 1 → lee array + 4
+    ...
+
+    add eax, ebx
+    Suma el valor del arreglo al acumulador.
+    eax va guardando la suma total.
+
+    inc ecx
+    Avanza al siguiente elemento del arreglo.
+    ecx = ecx + 1
+
+    cmp ecx, 5
+    jl bucle
+    Compara ecx con 5.
+    Si ecx < 5, regresa al bucle.
+    En total recorre 5 elementos: índices 0,1,2,3,4.
+
+    print_int eax
+    Imprime el resultado de la suma almacenado en eax.
+    (Esta es una llamada a una macro o procedimiento externo definido en otro archivo.)
+
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+_start:
+    mov ecx, 0
+    mov eax, 0
+    ecx = 0: índice del arreglo.
+    eax = 0: acumulador donde se guarda la suma total.
+
+bucle:
+    mov ebx, [array + ecx*4]
+    Carga en ebx el elemento del arreglo en la posición ecx.
+    Se usa ecx * 4 porque cada entero ocupa 4 bytes.
+
+    add eax, ebx
+    Suma al acumulador el valor del elemento.
+
+    inc ecx
+    Avanza al siguiente índice del arreglo.
+
+    cmp ecx, 5
+    jl bucle
+    Compara ecx con 5.
+    Si ecx < 5, regresa al inicio del bucle.
+    Esto hace que se procesen 5 elementos: índices 0 al 4.
+
+    print_int eax
+    Imprime el valor total acumulado en eax (la suma del arreglo).
+
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
