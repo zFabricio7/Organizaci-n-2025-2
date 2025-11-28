@@ -1,0 +1,129 @@
+; Comparador de números A y B
+
+MOV AX, A
+MOV BX, B
+
+CMP AX, BX
+JE  SON_IGUALES
+JG  A_MAYOR
+JL  B_MAYOR
+
+SON_IGUALES:
+    CMP AX, 0
+    JS  AMBOS_NEGATIVOS
+    JMP FIN
+
+A_MAYOR:
+    CMP AX, 0
+    JS  A_NEGATIVO
+    JMP FIN
+
+B_MAYOR:
+    CMP BX, 0
+    JS  B_NEGATIVO
+    JMP FIN
+
+AMBOS_NEGATIVOS:
+A_NEGATIVO:
+B_NEGATIVO:
+
+FIN:
+
+; Clasificación de N: positivo, negativo o cero
+
+MOV AX, N
+CMP AX, 0
+JE  ES_CERO
+JS  ES_NEGATIVO
+JMP ES_POSITIVO
+
+; Determinar si un número es par o impar usando Parity Flag
+
+MOV AX, N
+AND AX, 1     ; Obtiene el bit menos significativo
+
+JP  ES_PAR    ; PF = 1 -> número par
+JNP ES_IMPAR  ; PF = 0 -> número impar
+
+; Detectar overflow en suma
+
+MOV AX, A
+MOV BX, B
+ADD AX, BX
+
+JO  HAY_OVERFLOW
+JNO SIN_OVERFLOW
+
+; Detectar carry en suma
+
+MOV AX, A
+MOV BX, B
+ADD AX, BX
+
+JC  HAY_ACARREO
+JNC SIN_ACARREO
+
+; Calcular mínimo y máximo entre A, B, C
+
+MOV AX, A    ; AX = mínimo
+MOV BX, A    ; BX = máximo
+
+; Comparar B
+CMP B, AX
+JL  NUEVO_MIN_B
+CMP B, BX
+JG  NUEVO_MAX_B
+
+; Comparar C
+CMP C, AX
+JL  NUEVO_MIN_C
+CMP C, BX
+JG  NUEVO_MAX_C
+
+JMP FIN
+
+NUEVO_MIN_B:
+    MOV AX, B
+NUEVO_MAX_B:
+    MOV BX, B
+
+NUEVO_MIN_C:
+    MOV AX, C
+NUEVO_MAX_C:
+    MOV BX, C
+
+FIN:
+
+; Ordenar A y B de forma ascendente
+
+MOV AX, A
+MOV BX, B
+
+CMP AX, BX
+JG  INTERCAMBIAR
+JMP FIN
+
+INTERCAMBIAR:
+    MOV CX, AX
+    MOV AX, BX
+    MOV BX, CX
+
+FIN:
+
+; Contador 0 a 9 sin usar comparaciones directas
+
+MOV AL, 0
+
+INICIO:
+    ; imprimir AL
+    INC AL
+
+    CMP AL, 10      ; si no se permite CMP, usar SUB:
+    ; SUB AL, 10
+    ; JZ  FIN_CONTADOR
+    ; ADD AL, 10
+
+    JE  FIN_CONTADOR
+    JMP INICIO
+
+FIN_CONTADOR:
