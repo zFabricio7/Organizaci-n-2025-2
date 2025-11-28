@@ -1,0 +1,36 @@
+; Simulación sencilla de TRY / CATCH
+
+start:
+    ; Aquí intentamos hacer algo que podría "fallar"
+    mov eax, 0            ; asumimos que no hay error
+
+    ; Simulamos un error
+    mov eax, 1            ; 1 = ocurrió un error
+
+    ; Si eax es distinto de cero -> saltamos al CATCH
+    cmp eax, 0
+    jne catch_block
+
+    ; Si no hubo error, continuamos normal
+    jmp continue_program
+
+; ---- CATCH ----
+catch_block:
+    ; Aquí manejamos el error
+    ; En un try/catch real, aquí va lo que haces cuando hay problema
+    ; Por ejemplo: mostrar mensaje, limpiar recursos, etc.
+    ; Aquí solo simulamos con un comentario.
+    ; (Imagina: "Ocurrió un error, lidiando con él...")
+
+    jmp end_program
+
+; ---- CONTINUACIÓN NORMAL ----
+continue_program:
+    ; Aquí iría el código que sigue cuando no hubo errores
+    ; (Imagina: "Todo salió bien, seguimos...")
+
+    jmp end_program
+
+; ---- FIN ----
+end_program:
+    ; Aquí termina todo
